@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuX</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #1E1E1E;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            padding: 20px;
+        }
+
+        .code-container {
+            width: 100%;
+            max-width: 800px;
+            background: #2D2D2D;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .code-header {
+            background: #1A1A1A;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            transition: transform 0.2s;
+        }
+
+        .dot:hover {
+            transform: scale(1.2);
+        }
+
+        .dot.red { background: #FF5F56; }
+        .dot.yellow { background: #FFBD2E; }
+        .dot.green { background: #27C93F; }
+
+        .file-name {
+            color: #858585;
+            font-size: 14px;
+            flex: 1;
+        }
+
+        .code-content {
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .code-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 40px;
+            width: 1px;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .line {
+            display: flex;
+            margin-bottom: 5px;
+            opacity: 0;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .line-number {
+            width: 40px;
+            color: #858585;
+            text-align: right;
+            padding-right: 15px;
+            user-select: none;
+        }
+
+        .code {
+            flex: 1;
+            padding-left: 15px;
+            color: #D4D4D4;
+        }
+
+        .keyword { color: #569CD6; }
+        .function { color: #DCDCAA; }
+        .string { color: #CE9178; }
+        .comment { color: #6A9955; }
+        .punctuation { color: #D4D4D4; }
+        .operator { color: #D4D4D4; }
+        .parameter { color: #9CDCFE; }
+        .method { color: #DCDCAA; }
+        .property { color: #9CDCFE; }
+
+        .typing {
+            border-right: 2px solid #569CD6;
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            from, to { border-color: transparent; }
+            50% { border-color: #569CD6; }
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.2em;
+            background: #569CD6;
+            margin-left: 2px;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+        }
+
+        .line:nth-child(1) { animation-delay: 0.1s; }
+        .line:nth-child(2) { animation-delay: 0.2s; }
+        .line:nth-child(3) { animation-delay: 0.3s; }
+        .line:nth-child(4) { animation-delay: 0.4s; }
+        .line:nth-child(5) { animation-delay: 0.5s; }
+        .line:nth-child(6) { animation-delay: 0.6s; }
+        .line:nth-child(7) { animation-delay: 0.7s; }
+        .line:nth-child(8) { animation-delay: 0.8s; }
+        .line:nth-child(9) { animation-delay: 0.9s; }
+        .line:nth-child(10) { animation-delay: 1s; }
+
+        @media (max-width: 600px) {
+            .code-container {
+                font-size: 12px;
+            }
+
+            .file-name {
+                font-size: 12px;
+            }
+
+            .line-number {
+                width: 30px;
+            }
+
+            .code-content::before {
+                left: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="code-container">
+        <div class="code-header">
+            <div class="window-controls">
+                <div class="dot red"></div>
+                <div class="dot yellow"></div>
+                <div class="dot green"></div>
+            </div>
+            <div class="file-name">index.js</div>
+        </div>
+        <div class="code-content">
+            <div class="line">
+                <div class="line-number">1</div>
+                <div class="code">
+                    <span class="keyword">const</span> 
+                    <span class="parameter">Discord</span> 
+                    <span class="operator">=</span> 
+                    <span class="function">require</span>
+                    <span class="punctuation">(</span>
+                    <span class="string">'discord.js'</span>
+                    <span class="punctuation">);</span>
+                </div>
+            </div>
+            <div class="line">
+                <div class="line-number">2</div>
+                <div class="code">
+                    <span class="keyword">const</span> 
+                    <span class="parameter">client</span> 
+                    <span class="operator">=</span> 
+                    <span class="keyword">new</span> 
+                    <span class="function">Discord.Client</span>
+                    <span class="punctuation">();</span>
+                </div>
+            </div>
+            <div class="line">
+                <div class="line-number">3</div>
+                <div class="code"></div>
+            </div>
+            <div class="line">
+                <div class="line-number">4</div>
+                <div class="code">
+                    <span class="parameter">client</span>
+                    <span class="punctuation">.</span>
+                    <span class="method">on</span>
+                    <span class="punctuation">(</span>
+                    <span class="string">'ready'</span>
+                    <span class="punctuation">,</span> 
+                    <span class="punctuation">()</span> 
+                    <span class="operator">=></span> 
+                    <span class="punctuation">{</span>
+                </div>
+            </div>
+            <div class="line">
+                <div class="line-number">5</div>
+                <div class="code">
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <span class="function">console</span>
+                    <span class="punctuation">.</span>
+                    <span class="method">log</span>
+                    <span class="punctuation">(</span>
+                    <span class="string">'LuX Was Here'</span>
+                    <span class="punctuation">);</span>
+                </div>
+            </div>
+            <div class="line">
+                <div class="line-number">6</div>
+                <div class="code">
+                    <span class="punctuation">});</span>
+                </div>
+            </div>
+            <div class="line">
+                <div class="line-number">7</div>
+                <div class="code"></div>
+            </div>
+            <div class="line">
+                <div class="line-number">8</div>
+                <div class="code">
+                    <span class="parameter">client</span>
+                    <span class="punctuation">.</span>
+                    <span class="method">on</span>
+                    <span class="punctuation">(</span>
+                    <span class="string">'message'</span>
+                    <span class="punctuation">,</span> 
+                    <span class="parameter">msg</span> 
+                    <span class="operator">=></span> 
+                    <span class="punctuation">{</span>
+                </div>
+            </div>
+            <div class="line">
+                <div class="line-number">9</div>
+                <div class="code">
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <span class="keyword">if</span> 
+                    <span class="punctuation">(</span>
+                    <span class="parameter">msg</span>
+                    <span class="punctuation">.</span>
+                    <span class="property">content</span> 
+                    <span class="operator">===</span> 
+                    <span class="string">'.spotify'</span>
+                    <span class="punctuation">)</span> 
+                    <span class="punctuation">{</span>
+                </div>
+            </div>
+            <div class="line">
+                <div class="line-number">10</div>
+                <div class="code">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span class="parameter">msg</span>
+                    <span class="punctuation">.</span>
+                    <span class="method">reply</span>
+                    <span class="punctuation">(</span>
+                    <span class="string">'Dinliyorsun: Ati242 - Gülşen'</span>
+                    <span class="punctuation">);</span>
+                </div>
+            </div>
+            <div class="line">
+                <div class="line-number">11</div>
+                <div class="code">
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <span class="punctuation">}</span>
+                </div>
+            </div>
+            <div class="line">
+                <div class="line-number">12</div>
+                <div class="code">
+                    <span class="punctuation">});</span>
+                </div>
+            </div>
+            <div class="line">
+                <div class="line-number">13</div>
+                <div class="code">
+                    <span class="parameter">client</span>
+                    <span class="punctuation">.</span>
+                    <span class="method">login</span>
+                    <span class="punctuation">(</span>
+                    <span class="string">'BOT_TOKEN'</span>
+                    <span class="punctuation">);</span>
+                    <span class="cursor"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
